@@ -1,0 +1,9 @@
+.env
+
+.DS_Store
+
+/data/postgresql/*
+
+/node_modules
+
+*/node_modules
