@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { makeCreateLinkUseCase } from '../factories/make-create-link';
+import { HttpCreateLinkPresenter } from '../presenters/create-link.presenter';
 
 export async function createLink(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
@@ -18,5 +19,11 @@ export async function createLink(request: FastifyRequest, reply: FastifyReply) {
     userId: user,
   });
 
-  return reply.status(201).send(result);
+  if (result.isError()) {
+    return reply.status(400).send({ message: 'Link creation failed' });
+  }
+
+  return reply
+    .status(201)
+    .send(HttpCreateLinkPresenter.toHttp(result.value.link));
 }
