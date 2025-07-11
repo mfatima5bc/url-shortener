@@ -156,6 +156,12 @@ Realize a migração do banco:
 > pnpm prisma migrate
 ```
 
+Realize o download dos pacotes em cada serviço:
+
+```bash
+> pnpm install
+```
+
 Para iniciar os projetos rode ():
 
 ```bash
