@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run --dir src/domain/use-cases",
+    "start:dev": "tsx watch src/infra/server.ts",
+    "start": "node dist/infra/server.js",
+    "build": "tsup src --out-dir dist"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +15,7 @@
   "packageManager": "pnpm@10.10.0",
   "devDependencies": {
     "@faker-js/faker": "^9.9.0",
+    "@prisma/client": "^6.11.1",
     "@types/node": "^24.0.12",
     "eslint": "^9.30.1",
     "eslint-config-love": "^121.0.0",
@@ -24,5 +28,16 @@
     "typescript-eslint": "^8.36.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/jwt": "^9.1.0",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.0",
+    "fastify": "^5.4.0",
+    "fastify-type-provider-zod": "^5.0.2",
+    "prisma": "^6.11.1",
+    "zod": "^3.25.76",
+    "zod-validation-error": "4.0.0-beta.1"
   }
 }
