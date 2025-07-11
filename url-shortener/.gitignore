@@ -1,7 +1,10 @@
 .env
 
+./certs
+
 /data/postgresql/*
 
 /node_modules
 
 */node_modules
+/generated/prisma

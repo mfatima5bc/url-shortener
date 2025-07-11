@@ -1,5 +1,9 @@
 .env
 
+*/certs/*
+
+*/data/postgresql/*
+
 .DS_Store
 
 /data/postgresql/*
