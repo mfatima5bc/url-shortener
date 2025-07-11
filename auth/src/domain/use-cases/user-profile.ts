@@ -1,5 +1,4 @@
 import { error, ResponseType, success } from '@/core/types/response-type';
-import { User } from '../entities/user';
 import { UsersRepository } from '../repositories/users-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
 
@@ -10,7 +9,10 @@ interface GetUserProfileUseCaseInput {
 type GetUserProfileUseCaseOutput = ResponseType<
   ResourceNotFoundError,
   {
-    user: User;
+    user: {
+      name: string;
+      email: string;
+    };
   }
 >;
 
@@ -27,7 +29,11 @@ export class GetUserProfileUseCase {
     }
 
     return success({
-      user,
+      user: {
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+      },
     });
   }
 }
