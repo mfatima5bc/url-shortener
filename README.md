@@ -150,16 +150,16 @@ Dentro de cada um dos projetos rode o comando que inicia os bancos de dados:
 > docker compose up
 ```
 
-Realize a migração do banco:
-
-```bash
-> pnpm prisma migrate
-```
-
 Realize o download dos pacotes em cada serviço:
 
 ```bash
 > pnpm install
+```
+
+Realize a migração do banco:
+
+```bash
+> pnpm prisma migrate
 ```
 
 Para iniciar os projetos rode ():
