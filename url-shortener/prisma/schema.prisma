@@ -15,7 +15,7 @@ datasource db {
 
 model Link {
   id           String    @id @default(uuid())
-  originalLink String    @unique
+  originalLink String
   owner        String?
   active       Boolean
   shortLink    String    @unique
