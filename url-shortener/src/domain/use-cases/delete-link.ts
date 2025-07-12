@@ -1,7 +1,6 @@
 import { error, ResponseType, success } from '@/core/types/response-type';
 
 import { LinkRepository } from '../repositories/link-repository';
-import { MetricRepository } from '../repositories/metric-repository';
 import { BaseUseCaseError } from './errors/base-error';
 import { UnauthorizedError } from './errors/unauthorized-error';
 
@@ -13,9 +12,7 @@ interface deleteLinkInput {
 type deleteLinkOutput = ResponseType<BaseUseCaseError, {}>;
 
 export class DeleteLinkUseCase {
-  constructor(
-    private linkRepository: LinkRepository,
-  ) {}
+  constructor(private linkRepository: LinkRepository) {}
 
   async execute({
     linkId,

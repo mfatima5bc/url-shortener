@@ -5,7 +5,10 @@ import { HttpCreateLinkPresenter } from '../presenters/create-link.presenter';
 
 export async function createLink(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
-    originalLink: z.string(),
+    originalLink: z
+      .string()
+      .min(4, 'Original link length should be more then 4 caracteres')
+      .url('Invalid URL format'),
   });
 
   const user = request.user?.sub || null;

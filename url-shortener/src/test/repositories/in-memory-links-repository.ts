@@ -5,7 +5,9 @@ export class InMemoryLinkRepository implements LinkRepository {
   public items: Link[] = [];
 
   async findById(id: string): Promise<Link | null> {
-    const result = this.items.find((item) => item.id.toString() === id) || null;
+    const result =
+      this.items.find((item) => item.id.toString() === id && item.active) ||
+      null;
     return result;
   }
 
@@ -15,12 +17,14 @@ export class InMemoryLinkRepository implements LinkRepository {
 
   async findByOriginalLink(link: string): Promise<Link | null> {
     const result =
-      this.items.find((item) => item.originalLink === link) || null;
+      this.items.find((item) => item.originalLink === link && item.active) ||
+      null;
     return result;
   }
 
   async findByShortLink(link: string): Promise<Link | null> {
-    const result = this.items.find((item) => item.shortLink === link) || null;
+    const result =
+      this.items.find((item) => item.shortLink === link && item.active) || null;
     return result;
   }
 
@@ -32,7 +36,7 @@ export class InMemoryLinkRepository implements LinkRepository {
   async delete(linkId: string): Promise<void> {
     const index = this.items.findIndex((item) => item.id.toString() === linkId);
 
-    this.items.splice(index, 1);
+    this.items[index].active = false;
   }
   async updateOrigin(linkId: string, newOrigin: string): Promise<Link> {
     const index = this.items.findIndex((item) => item.id.toString() === linkId);

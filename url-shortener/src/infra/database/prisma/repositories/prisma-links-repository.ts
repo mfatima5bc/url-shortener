@@ -5,9 +5,10 @@ import { prisma } from '../prisma.service';
 
 export class PrismaLinksRepository implements LinkRepository {
   async findByOriginalLink(link: string): Promise<Link | null> {
-    const linkResult = await prisma.link.findUnique({
+    const linkResult = await prisma.link.findFirst({
       where: {
         originalLink: link,
+        active: true,
       },
     });
 
@@ -19,6 +20,7 @@ export class PrismaLinksRepository implements LinkRepository {
     const linkResult = await prisma.link.findUnique({
       where: {
         shortLink: link,
+        active: true,
       },
     });
 
@@ -30,6 +32,7 @@ export class PrismaLinksRepository implements LinkRepository {
     const link = await prisma.link.findMany({
       where: {
         owner: userId,
+        active: true,
       },
     });
 
@@ -38,9 +41,12 @@ export class PrismaLinksRepository implements LinkRepository {
     return link.map(PrismaLinkMapper.toDomain);
   }
   async delete(linkId: string): Promise<void> {
-    await prisma.link.delete({
+    await prisma.link.update({
       where: {
         id: linkId,
+      },
+      data: {
+        active: false,
       },
     });
   }
@@ -60,6 +66,7 @@ export class PrismaLinksRepository implements LinkRepository {
     const link = await prisma.link.findUnique({
       where: {
         id: id,
+        active: true,
       },
     });
 

@@ -18,10 +18,15 @@ describe('Delete link', () => {
   it('should be able to delete a link', async () => {
     const result = await sut.execute({ linkId: 'my-test', userId: 'me-me' });
 
+    const link = await linkRepository.items.find(
+      (item) => item.id.toString() === 'my-test',
+    );
+
     expect(result.isSuccess()).toBe(true);
-    expect(result).toEqual(
+    expect(link).toEqual(
       expect.objectContaining({
-        value: {},
+        active: false,
+        id: expect.objectContaining({ value: 'my-test' }),
       }),
     );
   });
