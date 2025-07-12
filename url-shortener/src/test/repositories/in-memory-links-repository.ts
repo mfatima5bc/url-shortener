@@ -1,3 +1,4 @@
+import { ListPaginatedParams } from '@/core/types/pagination';
 import { Link } from '@/domain/entities/link';
 import { LinkRepository } from '@/domain/repositories/link-repository';
 
@@ -28,9 +29,19 @@ export class InMemoryLinkRepository implements LinkRepository {
     return result;
   }
 
-  async listByUser(userId: string): Promise<Link[] | []> {
+  async listByUser({
+    userId,
+    limit,
+    page,
+  }): Promise<ListPaginatedParams<Link>> {
     const result = this.items.filter((item) => item.owner === userId);
-    return result;
+
+    const data = result.slice((page - 1) * limit, page * limit);
+    return {
+      page,
+      hasNextPage: result.length >= limit,
+      data,
+    };
   }
 
   async delete(linkId: string): Promise<void> {

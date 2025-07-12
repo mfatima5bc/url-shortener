@@ -1,3 +1,4 @@
+import { ListPaginatedParams } from '@/core/types/pagination';
 import { Link } from '@/domain/entities/link';
 import { LinkRepository } from '@/domain/repositories/link-repository';
 import { PrismaLinkMapper } from '../mappers/link-mapper';
@@ -28,17 +29,40 @@ export class PrismaLinksRepository implements LinkRepository {
 
     return PrismaLinkMapper.toDomain(linkResult);
   }
-  async listByUser(userId: string): Promise<Link[] | []> {
-    const link = await prisma.link.findMany({
-      where: {
-        owner: userId,
-        active: true,
-      },
-    });
+  async listByUser({
+    userId,
+    limit,
+    page,
+  }): Promise<ListPaginatedParams<Link>> {
+    const [links, count] = await prisma.$transaction([
+      prisma.link.findMany({
+        where: {
+          owner: userId,
+          active: true,
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      prisma.link.count({
+        where: {
+          owner: userId,
+          active: true,
+        },
+      }),
+    ]);
 
-    if (!link) return [];
+    if (!links)
+      return {
+        page,
+        hasNextPage: false,
+        data: [],
+      };
 
-    return link.map(PrismaLinkMapper.toDomain);
+    return {
+      page,
+      hasNextPage: count >= limit,
+      data: links.map(PrismaLinkMapper.toDomain),
+    };
   }
   async delete(linkId: string): Promise<void> {
     await prisma.link.update({
